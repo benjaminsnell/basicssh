@@ -1,13 +1,11 @@
-import tkinter as tk
 import tkinter.filedialog as filedialog
-from tkinter import simpledialog
 import subprocess
+import customtkinter as ctk
+import customtkinter
 import time
 import os
 
-#gui = tk.Tk()
 #pyinstaller and “noconsole” argument
-
 
 def pubKey():
     global file_path
@@ -38,14 +36,14 @@ def connect():
         
         
 def successMessage(filename):
-    popup = tk.Tk()
+    popup = ctk.CTk()
     popup.geometry("300x100")
     popup.title("File Creation Status")
 
-    label = tk.Label(popup, text="Created " + filename + " successfully!", padx=20, pady=20)
+    label = ctk.Label(popup, text="Created " + filename + " successfully!", padx=20, pady=20)
     label.pack()
 
-    ok_button = tk.Button(popup, text="OK", command=popup.destroy)
+    ok_button = ctk.Button(popup, text="OK", command=popup.destroy)
     ok_button.pack()
 
     popup.mainloop()
@@ -61,7 +59,7 @@ def create():
     else:
         command = f"ssh {username}@{ip} -p {port}"
     
-    fileName = simpledialog.askstring("File Name", "Enter the file name:")
+    fileName = customtkinter.CTkInputDialog(text="File Name:", title="Create Shortcut")
     filePath = os.path.join(os.path.expanduser("~/Desktop"), fileName + ".bat")
 
     with open(filePath, "w") as f:
@@ -76,39 +74,39 @@ def create():
 #GUI
 
 pad = 30
-mainColor = "SpringGreen4"
-fgColor = "black"
+#mainColor = "SpringGreen4"
+fgColor = "green"
 
-gui = tk.Tk()
+gui = ctk.CTk()
 gui.title("BasicSSH - basicssh.com")
-gui.configure(bg = mainColor)
+#gui.configure(bg = mainColor)
 
 
-ip_or_domain_label = tk.Label(gui, text="IP/Domain:", bg=mainColor, fg=fgColor)
-ip_or_domain_label.grid(row=0, column=0, padx=pad, pady=5, sticky="w")
-ip_or_domain_entry = tk.Entry(gui)
-ip_or_domain_entry.grid(row=0, column=1, padx=pad, pady=5)
+ip_or_domain_label = ctk.CTkLabel(gui, text="IP/Domain:")
+ip_or_domain_label.grid(row=0, column=0, padx=pad, pady=pad, sticky="w")
+ip_or_domain_entry = ctk.CTkEntry(gui)
+ip_or_domain_entry.grid(row=0, column=1, padx=pad, pady=pad)
 
 
-port_label = tk.Label(gui, text="Port:", bg=mainColor, fg=fgColor)
-port_label.grid(row=1, column=0, padx=pad, pady=5, sticky="w")
-port_entry = tk.Entry(gui)
-port_entry.grid(row=1, column=1, padx=pad, pady=5)
+port_label = ctk.CTkLabel(gui, text="Port:")
+port_label.grid(row=1, column=0, padx=pad, pady=pad, sticky="w")
+port_entry = ctk.CTkEntry(gui)
+port_entry.grid(row=1, column=1, padx=pad, pady=pad)
 
 
-username_label = tk.Label(gui, text="Username:", bg=mainColor, fg=fgColor)
-username_label.grid(row=2, column=0, padx=pad, pady=5, sticky="w")
-username_entry = tk.Entry(gui)
-username_entry.grid(row=2, column=1, padx=pad, pady=5)
+username_label = ctk.CTkLabel(gui, text="Username:")
+username_label.grid(row=2, column=0, padx=pad, pady=pad, sticky="w")
+username_entry = ctk.CTkEntry(gui)
+username_entry.grid(row=2, column=1, padx=pad, pady=pad)
 
-isOn = tk.IntVar()
-file_selector_checkbox = tk.Checkbutton(gui, text="Pub Key?", variable=isOn, command = pubKey)
-file_selector_checkbox.grid(row=4, columnspan=1, padx=10, pady=5)
+isOn = ctk.IntVar()
+file_selector_checkbox = ctk.CTkCheckBox(gui, text="Pub Key?", variable=isOn, command = pubKey)
+file_selector_checkbox.grid(row=3, columnspan=1, padx=pad, pady=5)
 
-connect_button = tk.Button(gui, text="Connect", command=connect)
-connect_button.grid(row=4, columnspan=2, padx=10, pady=10)
+connect_button = ctk.CTkButton(gui, text="Connect", command=connect, fg_color = fgColor)
+connect_button.grid(row=4, columnspan=3, padx=pad, pady=15)
 
-create_button = tk.Button(gui, text="Create Shortcut", command=create)
-create_button.grid(row=5, columnspan=4, padx=5, pady=5)
+create_button = ctk.CTkButton(gui, text="Create Shortcut", command=create, fg_color = fgColor)
+create_button.grid(row=5, columnspan=3, padx=pad, pady=15)
 
 gui.mainloop()
